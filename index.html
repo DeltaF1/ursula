@@ -1,10 +1,19 @@
 <head>
 	<title>U.R.S.U.L.A.</title>
+	<script>
+	function createChain()
+	{
+		var input = document.getElementById("sourceInput");
+		document.getElementById("outputTest").innerHTML = input.value;
+	}
+	</script>
 </head>
 <body>
 	<h1>Welcome!</h1>
 	<p>
 		To begin, enter the source text below, then press "generate" to generate words from the text.
 	</p>
-	
+	<input id = "sourceInput">
+	<button onClick = "createChain()">SUBMIT</button>
+	<span id = "outputTest">Test</span>
 </body> 
