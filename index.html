@@ -1,12 +1,7 @@
+<!DOCTYPE html>
+<html>
 <head>
-	<title>U.R.S.U.L.A.</title>
-	<script>
-	function createChain()
-	{
-		var input = document.getElementById("sourceInput");
-		document.getElementById("outputTest").innerHTML = input.value;
-	}
-	</script>
+	<title>TEST</title>
 </head>
 <body>
 	<h1>Welcome!</h1>
@@ -14,6 +9,112 @@
 		To begin, enter the source text below, then press "generate" to generate words from the text.
 	</p>
 	<input id = "sourceInput">
-	<button onClick = "createChain()">SUBMIT</button>
-	<span id = "outputTest">Test</span>
-</body> 
+	<button onClick = "getSource()">SUBMIT</button>
+	<br>
+	<form>
+		<input type = "radio" name = "type" value = "Word" id = "wordRadio" checked> Word
+		<br>
+		<input type = "radio" name = "type" value = "Sentence"> Sentence
+	</form>
+	How many?<input id = "repInput" value = "10">
+	<br>
+	What Depth?<input id = "depthInput" value = "2">
+	
+	<br>
+	OUTPUT
+	<br>
+	<p id = "outputTest">Test</p>
+	<span id = "debug">DEBUG<br></span>
+</body>
+<script>
+	String.prototype.repeat = function( num )
+	{
+		return new Array( num + 1 ).join( this );
+	}
+	var genType = document.getElementById("wordRadio").checked;
+	console.log("genType = "+genType);
+	var chain = {};
+	var depth = 2;
+	var repeat = 0;
+	
+	function createChain(arr)
+	{
+		//Insert extra space to identify starts
+		var beginning = [];
+		for (i = 0; i < depth; i++)
+		{
+			beginning[i] = " ";
+		}
+		arr = beginning.concat(arr);
+		
+		document.getElementById("debug").innerHTML += (arr.toString()+"<br>");
+		
+		for (i = 0; i < (arr.length + depth); i++)
+		{
+			key = arr.slice(i, i+depth).join("");
+			val = arr[i+depth];
+			if(!val){val="\n";}
+			console.log("chain["+key+"] = "+val)
+			chain[key] = val;
+		}
+		console.log(chain.toString())
+	}
+	function getSource()
+	{
+		chain = {};
+		var input = document.getElementById("sourceInput").value;
+		depth = parseInt(document.getElementById("depthInput").value, 10);
+		repeat = parseInt(document.getElementById("repInput").value, 10);
+		 
+		var output = "Test";
+		if (genType)
+		{
+			console.log("Generating Words\n");
+			words = input.split(" ");
+			console.log("words = "+words.toString())
+			for (i in words)
+			{
+				word = words[i]
+				wordParts = word.split("");
+				console.log(wordParts.toString());
+				createChain(wordParts);
+			}
+		}
+		else
+		{
+			
+		}
+		
+		generate();
+	}
+	
+	function generate()
+	{
+		output = "";
+		console.log("Generating!")
+		for (i = 0; i < repeat; i++)
+		{
+			var s = "";
+			
+			var start = " ".repeat(depth);
+			console.log("start = "+start)
+			var current = start;
+			var i = 0;
+			while (current != "\n")
+			{
+				i++;
+				s += current;
+				console.log("chain[current] = '"+current+"'");
+				console.log("current.slice(1, depth) = '"+current.slice(1,depth)+"'")
+				current = current.slice(1, depth) + chain[current]
+				if (i > 50) { break }
+			}
+			console.log("string = "+s);
+			output += (s+", ");
+		}
+		
+		
+		document.getElementById("outputTest").innerHTML = output;
+	}
+	</script> 
+</html>
