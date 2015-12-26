@@ -1,0 +1,14 @@
+html {
+	background-color: lightgrey;
+	font-family: arial;
+}
+
+h1, h2, h3, h4{
+	color: darkblue;
+}
+
+button {
+	/*background-image: url("button.png");*/
+	color: yellow;
+	background-color: darkblue;
+}

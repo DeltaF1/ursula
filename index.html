@@ -2,12 +2,15 @@
 <html>
 <head>
 	<title>TEST</title>
+	<link rel="stylesheet" href = "style.css">
 </head>
 <body>
 	<h1>Welcome!</h1>
 	<p>
 		To begin, enter the source text below, then press "generate" to generate words from the text.
 	</p>
+	
+	<h2>Input</h2>
 	<input id = "sourceInput">
 	<button onClick = "getSource()">SUBMIT</button>
 	<br>
@@ -16,15 +19,13 @@
 		<br>
 		<input type = "radio" name = "type" value = "Sentence"> Sentence
 	</form>
-	How many?<input id = "repInput" value = "10">
 	<br>
 	What Depth?<input id = "depthInput" value = "2">
-	
 	<br>
-	OUTPUT
+	<h2>Generation</h2>
+	How many?<input id = "repInput" value = "10"><button onClick = "generate()">GENERATE</button>
 	<br>
-	<p id = "outputTest">Test</p>
-	<span id = "debug">DEBUG<br></span>
+	<p id = "outputTest"></p>
 </body>
 <script>
 	String.prototype.repeat = function( num )
@@ -71,14 +72,15 @@
 		chain = {};
 		var input = document.getElementById("sourceInput").value;
 		depth = parseInt(document.getElementById("depthInput").value, 10);
-		repeat = parseInt(document.getElementById("repInput").value, 10);
-		 
+		
+		genType = document.getElementById("wordRadio").checked;
 		var output = "Test";
+		var words = input.split(" ");
+		console.log("words = "+words.toString())
 		if (genType)
 		{
 			console.log("Generating Words\n");
-			words = input.split(" ");
-			console.log("words = "+words.toString())
+			
 			for (i in words)
 			{
 				word = words[i]
@@ -89,14 +91,15 @@
 		}
 		else
 		{
+			console.log("Generating Sentences!")
 			
+			createChain(words)
 		}
-		
-		generate();
 	}
 	
 	function generate()
 	{
+		repeat = parseInt(document.getElementById("repInput").value, 10);
 		output = "";
 		console.log("Generating!")
 		console.log(JSON.stringify(chain));
