@@ -55,7 +55,14 @@
 			val = arr[i+depth];
 			if(!val){val="\n";}
 			console.log("chain["+key+"] = "+val)
-			chain[key] = val;
+			if (chain[key])
+			{
+				chain[key].push(val)
+			}
+			else
+			{
+				chain[key] = [val];
+			}
 		}
 		console.log(chain.toString())
 	}
@@ -100,13 +107,15 @@
 			console.log("start = "+start)
 			var current = start;
 			var i = 0;
-			while (current != "\n")
+			var newS = "";
+			while (newS != "\n")
 			{
 				i++;
 				s += current;
-				console.log("chain[current] = '"+current+"'");
+				console.log("chain[current] = '"+chain[current]+"'");
 				console.log("current.slice(1, depth) = '"+current.slice(1,depth)+"'")
-				current = current.slice(1, depth) + chain[current]
+				newS = chain[current][Math.floor(Math.random() * chain[current].length)]
+				current = current.slice(1, depth) + newS
 				if (i > 50) { break }
 			}
 			console.log("string = "+s);
