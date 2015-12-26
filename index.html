@@ -47,14 +47,14 @@
 		}
 		arr = beginning.concat(arr);
 		
-		document.getElementById("debug").innerHTML += (arr.toString()+"<br>");
+		//document.getElementById("debug").innerHTML += (arr.toString()+"<br>");
 		
 		for (i = 0; i < (arr.length + depth); i++)
 		{
 			key = arr.slice(i, i+depth).join("");
 			val = arr[i+depth];
 			if(!val){val="\n";}
-			console.log("chain["+key+"] = "+val)
+			//console.log("chain["+key+"] = "+val)
 			if (chain[key])
 			{
 				chain[key].push(val)
@@ -64,7 +64,7 @@
 				chain[key] = [val];
 			}
 		}
-		console.log(chain.toString())
+		
 	}
 	function getSource()
 	{
@@ -83,7 +83,7 @@
 			{
 				word = words[i]
 				wordParts = word.split("");
-				console.log(wordParts.toString());
+				//console.log(wordParts.toString());
 				createChain(wordParts);
 			}
 		}
@@ -99,7 +99,8 @@
 	{
 		output = "";
 		console.log("Generating!")
-		for (i = 0; i < repeat; i++)
+		console.log(JSON.stringify(chain));
+		for (x = 0; x < repeat; x++)
 		{
 			var s = "";
 			
@@ -111,11 +112,14 @@
 			while (newS != "\n")
 			{
 				i++;
-				s += current;
-				console.log("chain[current] = '"+chain[current]+"'");
-				console.log("current.slice(1, depth) = '"+current.slice(1,depth)+"'")
+				
+				//console.log("chain[current] = '"+chain[current]+"'");
+				//console.log("current.slice(1, depth) = '"+current.slice(1,depth)+"'")
 				newS = chain[current][Math.floor(Math.random() * chain[current].length)]
+				//console.log("newS = "+newS)
 				current = current.slice(1, depth) + newS
+				//console.log("current = "+current)
+				s += newS;
 				if (i > 50) { break }
 			}
 			console.log("string = "+s);
