@@ -9,10 +9,10 @@
 	<div id="instructions">
 	<h1>Welcome!</h1>
 	<p>
-		To begin, enter the source text below, then press "generate" to generate words from the text.
+		To begin, enter the source text below, press "submit" then press "generate" to generate words from the text. Each time the source text or depth is changed, the "submit" button must be pressed again.
 	</p>
 	<p>
-		To generate individual words, put a space seperated list of words into the input field.
+		To generate individual words, put a space separated list of words into the input field.
 	</p>
 	</div>
 	<br>
@@ -26,15 +26,16 @@
 		<input type = "radio" name = "type" value = "Sentence"> Sentence
 	</form>
 	<br>
-	Depth<input id = "depthInput" value = "2"><span class ="help" title="The depth determines how like the source text the output is">?</span>
+	Depth<input id = "depthInput" value = "2"><span class ="help" title="The depth determines how like the source text the output is. A good depth for words is 2 or 3">?</span>
 	<br>
 	<button class="link" onclick = "advancedToggle();"><h3>Advanced Options</h3></button>
 	<div id="advanced" class="hidden">
-	Seperator (Leave blank for whitespace)<input id = "seperatorInput" value="">
+	separator (Leave blank for whitespace)<input id = "separatorInput" value=""><span class = "help" title="Use this to denote how words are separated. For example, if a list of words is in the form 'Alice, Bob, Eve' then this should be ', '">?</span>
 	</div>
 	<br>
 	<h2>Generation</h2>
-	Number to generate<input id = "repInput" value = "10"><button onClick = "generate()">GENERATE</button>
+	Number to generate<input id = "repInput" value = "10">
+	<button onClick = "generate()">GENERATE</button>
 	<br>
 	<p id = "outputTest"></p>
 	
@@ -87,7 +88,7 @@
 		
 		genType = document.getElementById("wordRadio").checked;
 		var output = "Test";
-		var sep = document.getElementById("seperatorInput").value;
+		var sep = document.getElementById("separatorInput").value;
 		if (sep == "") {sep = " ";}
 		var words = input.split(sep);
 		console.log("words = "+words.toString())
