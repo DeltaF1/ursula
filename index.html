@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8"> 
 	<title>URSULA</title>
 	<link rel="stylesheet" href = "style.css">
 	<script>
@@ -16,31 +17,43 @@
 	var chain = {};
 	var depth = 2;
 	var repeat = 0;
-	
+	//Declare the final output
+	var output;
+		
 	function createChain(arr)
 	{
-		//Insert extra space to identify starts
+		//Insert extra space to identify the start of each word or sentence
+		
 		var beginning = [];
 		for (i = 0; i < depth; i++)
 		{
 			beginning[i] = " ";
 		}
+		
+		//merge beginning into the input
 		arr = beginning.concat(arr);
 		
-		//document.getElementById("debug").innerHTML += (arr.toString()+"<br>");
-		
+		//For every letter/word in the word/sentence
 		for (i = 0; i < (arr.length + depth); i++)
 		{
+			//get the starting letters/words, i.e "  Alice" with depth 3 has "  A" as the first key, then " Al", then "Ali" etc.
 			key = arr.slice(i, i+depth).join("");
+			
+			//get the letter/word that directly follows, i.e "l" follows "  A"
 			val = arr[i+depth];
+			
+			//If we've hit the end of the word/sentence, set it to a newline character
 			if(!val){val="\n";}
-			//console.log("chain["+key+"] = "+val)
+			
+			//If we have a list of letters that follow this key already
 			if (chain[key])
 			{
+				//Add to the list
 				chain[key].push(val)
 			}
 			else
 			{
+				//Otherwise make a new list
 				chain[key] = [val];
 			}
 		}
@@ -48,61 +61,100 @@
 	}
 	function getSource()
 	{
+		//Reset the markov chain
 		chain = {};
+		
+		//Get the source text
 		var input = document.getElementById("sourceInput").value;
+		
+		//Get depth of chain, and turn it into a number
 		depth = parseInt(document.getElementById("depthInput").value, 10);
 		
+		//Check if generating words or sentences
 		genType = document.getElementById("wordRadio").checked;
-		var output = "Test";
+		
+		//Get the separator
 		var sep = document.getElementById("separatorInput").value;
+		
+		//If it's blank, assume the user wants spaces
 		if (sep == "") {sep = " ";}
+		
+		//Split the input text into words
 		var words = input.split(sep);
+		
+		
 		console.log("words = "+words.toString())
+		
+		//If generating words
 		if (genType)
 		{
 			console.log("Generating Words\n");
 			
+			//For every word
 			for (i in words)
 			{
 				word = words[i]
+				
+				//Split the word into letters
 				wordParts = word.split("");
-				//console.log(wordParts.toString());
+				
+				//Feed the chain with the array of letters (see createChain for details)
 				createChain(wordParts);
 			}
 		}
+		//If generating sentences
 		else
 		{
 			console.log("Generating Sentences!")
 			
+			//Feed the chain with the array of words
 			createChain(words)
 		}
 	}
 	
 	function generate()
 	{
+		//How many words/sentences are supposed to be generated?
 		repeat = parseInt(document.getElementById("repInput").value, 10);
+		
+		//reset output
 		output = "";
+		
 		console.log("Generating!")
 		console.log(JSON.stringify(chain));
+		
 		for (x = 0; x < repeat; x++)
 		{
+			//Final word/sentence
 			var s = "";
 			
+			//Pad the word/sentence with whitespace to signifiy the start
 			var start = " ".repeat(depth);
 			console.log("start = "+start)
+			
+			//The start of the word
 			var current = start;
+			
+			//How many letters have been generated
 			var i = 0;
+			
+			//The next letter to add onto the word
 			var newS = "";
+			
+			//Until the next letter is the end of a word
 			while (newS != "\n")
 			{
+				//Increase the letter count
 				i++;
 				
-				//console.log("chain[current] = '"+chain[current]+"'");
-				//console.log("current.slice(1, depth) = '"+current.slice(1,depth)+"'")
+				//Get the next letter by randomly selecting one of the next possible letters
+				//
+				//i.e. if chain["  A"] = ["l", "b", "b", "c"]
+				//select a random letter ("b")
 				newS = chain[current][Math.floor(Math.random() * chain[current].length)]
-				//console.log("newS = "+newS)
+	
 				current = current.slice(1, depth) + newS
-				//console.log("current = "+current)
+		
 				s += newS;
 				if (i > 50) { break }
 			}
@@ -148,11 +200,11 @@
 		<input type = "radio" name = "type" value = "Sentence"> <span class = "WIP">Sentence (Not implemented yet)</span>
 	</form>
 	<br>
-	Depth<input id = "depthInput" value = "2"><span class ="help" title="The depth determines how like the source text the output is. A good depth for words is 2 or 3">?</span>
-	<br>
-	<button class="link" onclick = "advancedToggle();"><h3>Advanced Options</h3></button>
+	<button class="link" onclick = "advancedToggle();"><h3>Advanced Options ▼</h3></button>
 	<div id="advanced" class="hidden">
-	separator (Leave blank for whitespace)<input id = "separatorInput" value=""><span class = "help" title="Use this to denote how words are separated. For example, if a list of words is in the form 'Alice, Bob, Eve' then this should be ', '">?</span>
+	Separator (Leave blank for whitespace)<input id = "separatorInput" value=""><span class = "help" title="Use this to denote how words are separated. For example, if a list of words is in the form 'Alice, Bob, Eve' then this should be ', '">?</span>
+	<br>
+	Depth<input id = "depthInput" value = "2"><span class ="help" title="The depth determines how like the source text the output is. A good depth for words is 2 or 3">?</span>
 	</div>
 	<br>
 	<h2>Generation</h2>
