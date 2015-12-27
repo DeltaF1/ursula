@@ -26,6 +26,10 @@ button {
 	color: blue;
 }
 
+.WIP {
+	color: red;
+}
+
 .hidden {
 	display: none;
 }
