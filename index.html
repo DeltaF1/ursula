@@ -152,28 +152,39 @@
 				//i.e. if chain["  A"] = ["l", "b", "b", "c"]
 				//select a random letter ("b")
 				newS = chain[current][Math.floor(Math.random() * chain[current].length)]
-	
+				
+				//move the current key one letter forward i.e. "  A" becomes " Al"
 				current = current.slice(1, depth) + newS
-		
+				
+				//Add the new letter to our word
 				s += newS;
+				
+				//If our word is too long, stop making it
 				if (i > 50) { break }
 			}
 			console.log("string = "+s);
+			
+			//Add the word to the output
 			output += (s+", ");
 		}
 		
-		
+		//Display the output on the page
 		document.getElementById("outputTest").innerHTML = output;
 	}
 	
+	//Show/hide advanced options
 	function advancedToggle(){
 		var a = document.getElementById('advanced')
+		
+		//If it's hidden
 		if(a.className == 'hidden')
 		{
+			//Make it visible
 			a.className=''
 		}
 		else
 		{
+			//Else hide it
 			a.className='hidden'
 		}
 	}
