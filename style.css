@@ -22,7 +22,9 @@ button {
 	text-align: center;
 }
 
-
+.help {
+	color: blue;
+}
 
 .hidden {
 	display: none;
