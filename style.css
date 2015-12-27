@@ -33,3 +33,9 @@ button {
 .hidden {
 	display: none;
 }
+
+.legal {
+	font-family: "Times New Roman";
+	font-style: italic;
+	color: blue;
+}
